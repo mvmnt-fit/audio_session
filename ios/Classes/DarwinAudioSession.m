@@ -186,10 +186,13 @@ static NSHashTable<DarwinAudioSession *> *sessions = nil;
     NSError *error = nil;
     BOOL active = [args[0] boolValue];
     BOOL status;
-    if (args[1] != (id)[NSNull null]) {
-        status = [[AVAudioSession sharedInstance] setActive:active withOptions:[args[1] integerValue] error:&error];
-    } else {
-        status = [[AVAudioSession sharedInstance] setActive:active error:&error];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        //Background Thread
+        if (args[1] != (id)[NSNull null]) {
+            status = [[AVAudioSession sharedInstance] setActive:active withOptions:[args[1] integerValue] error:&error];
+        } else {
+            status = [[AVAudioSession sharedInstance] setActive:active error:&error];
+        }
     }
     if (error) {
         [self sendError:error result:result];
