@@ -135,6 +135,7 @@ class AudioSession {
     AndroidAudioFocusGainType androidAudioFocusGainType,
     AndroidAudioAttributes androidAudioAttributes,
     bool androidWillPauseWhenDucked,
+    bool backgroundThread,
     AudioSessionConfiguration fallbackConfiguration =
         const AudioSessionConfiguration.music(),
   }) async {
@@ -144,7 +145,8 @@ class AudioSession {
     if (!kIsWeb && Platform.isIOS) {
       return await _avAudioSession.setActive(active,
           avOptions: avAudioSessionSetActiveOptions ??
-              _configuration.avAudioSessionSetActiveOptions);
+              _configuration.avAudioSessionSetActiveOptions,
+          backgroundThread: backgroundThread);
     } else if (!kIsWeb && Platform.isAndroid) {
       if (active) {
         // Activate

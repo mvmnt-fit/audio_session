@@ -114,8 +114,8 @@ class AVAudioSession {
   }
 
   Future<bool> setActive(bool active,
-          {AVAudioSessionSetActiveOptions avOptions}) =>
-      _channel.invokeMethod('setActive', [active, avOptions?.value]);
+          {AVAudioSessionSetActiveOptions avOptions,bool backgroundThread}) =>
+      _channel.invokeMethod('setActive', [active, avOptions?.value, backgroundThread]);
 
   Future<AVAudioSessionRecordPermission> get recordPermission async {
     final int index = await _channel.invokeMethod('getRecordPermission');
